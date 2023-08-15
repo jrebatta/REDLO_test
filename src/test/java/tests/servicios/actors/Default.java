@@ -30,7 +30,8 @@ public class Default extends DataExcel {
 
 
    public void postRegistro(){
-      jsonObject.put("email",generateRandomText()+"@test"+".com");
+      String generatedEmail = generateRandomText() + "@test" + ".com";
+      jsonObject.put("email", generatedEmail);
       jsonObject.put("password",retornarValor("password", MetodosFeature.getScenario()));
       jsonObject.put("passwordConfirm",retornarValor("passwordConfirm", MetodosFeature.getScenario()));
       jsonObject.put("enterpriseName",retornarValor("enterpriseName", MetodosFeature.getScenario()));
@@ -40,7 +41,7 @@ public class Default extends DataExcel {
       jsonObject.put("phone",retornarValor("phone", MetodosFeature.getScenario()));
       jsonObject.put("position",retornarValor("position", MetodosFeature.getScenario()));
       jsonObject.put("enterpriseID",String.valueOf(generateRandomNumber()));
-
+      registrarValor("email",generatedEmail);
       RestAssured.baseURI = baseURI;
 
       request = given().header("Content-Type","application/json").contentType("application/json")
@@ -67,43 +68,41 @@ public class Default extends DataExcel {
     }
 
     public void validarLoginDeUsuario(){
-        jsonObject.put("username",retornarValor("email", MetodosFeature.getScenario()));
-        jsonObject.put("password",retornarValor("password", MetodosFeature.getScenario()));
+       jsonObject.put("username",retornarValor("email", MetodosFeature.getScenario()));
+       jsonObject.put("password",retornarValor("password", MetodosFeature.getScenario()));
 
-        RestAssured.baseURI = baseURI;
+       RestAssured.baseURI = baseURI;
 
-        request = given().header("Content-Type","application/json").contentType("application/json")
-                .accept("application/json").body(jsonObject.toJSONString()).log().all();
+       request = given().header("Content-Type","application/json").contentType("application/json")
+               .accept("application/json").body(jsonObject.toJSONString()).log().all();
 
     }
 
     public void validarYGuardarToken(){
-        token = response.then().extract().body().jsonPath().getString("token");
-        registrarValor("TOKEN",token);
+       token = response.then().extract().body().jsonPath().getString("token");
+       registrarValor("TOKEN",token);
     }
 
     public void getCerrarSesion() throws IOException {
-        request = given().header("Content-Type","application/json").
-                header("Authorization","Token "+ getCellValue("Hoja1",2,12)).contentType("application/json")
-                .accept("application/json").body(jsonObject.toJSONString()).log().all();
+       request = given().header("Content-Type","application/json").
+               header("Authorization","Token "+ getCellValue("Hoja1",2,12)).contentType("application/json")
+               .accept("application/json").body(jsonObject.toJSONString()).log().all();
     }
 
-
     public void validarBodyVacio(){
-        String body = response.getBody().asString();
-        Assert.assertEquals(body,"");
+       String body = response.getBody().asString();
+       Assert.assertEquals(body,"");
     }
 
     public void validarErrorEmailExiste(String mensaje){
-        String emailError = response.then().extract().body().jsonPath().getString("email").replace("[","").replace("]","").trim();
-        Assert.assertEquals(mensaje,emailError);
+       String emailError = response.then().extract().body().jsonPath().getString("email").replace("[","").replace("]","").trim();
+       Assert.assertEquals(mensaje,emailError);
     }
 
     public void validarErrorEnterpriseIDExiste(String mensaje){
-        String enterpriseIDError = response.then().extract().body().jsonPath().getString("enterpriseID").replace("[","").replace("]","").trim();
-        Assert.assertEquals(mensaje,enterpriseIDError);
+       String enterpriseIDError = response.then().extract().body().jsonPath().getString("enterpriseID").replace("[","").replace("]","").trim();
+       Assert.assertEquals(mensaje,enterpriseIDError);
     }
-
 
     public void postRegistroConErrorEmail() {
         jsonObject.put("email",retornarValor("email", MetodosFeature.getScenario()));

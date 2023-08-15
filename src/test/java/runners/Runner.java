@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = {"src/test/resources/features/"},
         strict = true,
-        tags = "@regresion",
+        tags = "",
         glue = "tests",
         monochrome = true
 )

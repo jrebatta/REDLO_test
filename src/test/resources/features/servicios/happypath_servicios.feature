@@ -1,4 +1,4 @@
-@happypath @regresion
+@happypath @regresion @servicios
   Feature:Validar el correcto funcionamiento de los principales servicios de REDLO
 
     @TEST01
